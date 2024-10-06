@@ -15,10 +15,10 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { forgetPasswordDTO, resetPasswordDTO, signInDTO } from './dto/auth';
 import { UniversalDecorator } from '../../common/decorators/universal.decorator';
 import { RefreshAuthGuard } from '../../core/guards/refresh-auth.guard';
-// import { GoogleAuthGuard } from '../../core/guards/googleauth.guard';
 import { LocalAuthGuard } from '../../core/guards/local-auth.guard';
 import { createResponse } from '../../helper/response.helper';
 import { GoogleAuthGuard } from 'src/core/guards/googleauth.guard';
+import { BlockToManyRequest } from 'src/core/guards/customTGuard.guard';
 
 // Controller For Authentication Module
 @Controller('auth')
@@ -30,6 +30,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   @Post('signin')
+  @UseGuards(BlockToManyRequest)
   @UniversalDecorator({
     summary: 'Sign in Form',
     responseType: signInDTO,
