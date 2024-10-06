@@ -1,0 +1,122 @@
+[
+    {
+      "title": "salary",
+      "status": "pending",
+      "category": "work",
+      "type": "pending",
+      "descriptions": "monthly salary",
+      "date": "2024-06-25"
+    },  
+    {
+      "title": "groceries",
+        "status": "completed",
+      "category": "food",
+      "type": "completed",
+      "descriptions": "weekly grocery shopping",
+      "date": "2024-06-24"
+    },
+    {
+      "title": "electricity bill",
+      "status": "in-progress",
+      "category": "utilities",
+      "type": "in-progress",
+      "descriptions": "monthly electricity bill",
+      "date": "2024-06-23"
+    },
+    {
+      "title": "freelance work",
+      "status": "cancelled",
+      "category": "work",
+      "type": "cancelled",
+      "descriptions": "payment for freelance project",
+      "date": "2024-06-22"
+    },
+    {
+      "title": "rent",
+      "status": "completed",
+      "category": "housing",
+      "type": "completed",
+      "descriptions": "monthly rent payment",
+      "date": "2024-06-21"
+    },
+    {
+      "title": "gym membership",
+      "status": "in-progress",
+      "category": "health",
+      "type": "in-progress",
+      "descriptions": "monthly gym fee",
+      "date": "2024-06-20"
+    },
+    {
+      "title": "restaurant",
+      "status": "pending",
+      "category": "food",
+      "type": "pending",
+      "descriptions": "dinner at a restaurant",
+      "date": "2024-06-19"
+    },
+    {
+      "title": "internet bill",
+      "status": "completed",
+      "category": "utilities",
+      "type": "completed",
+      "descriptions": "monthly internet bill",
+      "date": "2024-06-18"
+    },
+    {
+      "title": "transport",
+      "status": "pending",
+      "category": "transport",
+      "type": "pending",
+      "descriptions": "public transport pass",
+      "date": "2024-06-17"
+    },
+    {
+      "title": "office supplies",
+      "status": "in-progress",
+      "category": "work",
+      "type": "in-progress",
+      "descriptions": "stationery items for office",
+      "date": "2024-06-16"
+    },
+    {
+      "title": "concert tickets",
+      "status": "pending",
+      "category": "entertainment",
+      "type": "pending",
+      "descriptions": "tickets for a concert",
+      "date": "2024-06-15"
+    },
+    {
+      "title": "car maintenance",
+      "status": "completed",
+      "category": "transport",
+      "type": "completed",
+      "descriptions": "annual car servicing",
+      "date": "2024-06-14"
+    },
+    {
+      "title": "book purchase",
+      "status": "pending",
+      "category": "education",
+      "type": "pending",
+      "descriptions": "buying a new book",
+      "date": "2024-06-13"
+    },
+    {
+      "title": "movie night",
+      "status": "pending",
+      "category": "entertainment",
+      "type": "pending",
+      "descriptions": "tickets for a movie",
+      "date": "2024-06-12"
+    },
+    {
+      "title": "gift",
+        "status": "completed",
+      "category": "gifts",
+      "type": "completed",
+      "descriptions": "birthday gift for a friend",
+      "date": "2024-06-11"
+    }
+  ]

@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                       Int       @id @default(autoincrement())
+  name                     String
+  email                    String    @unique
+  password                 String
+  createdAt                DateTime  @default(now())
+  passwordChangedAt        DateTime?
+  passwordResetToken       String?
+  passwordResetTokenExpire DateTime?
+  role                     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade) 
+  roleId                   Int
+}
+
+model Role {
+  id          Int              @id @default(autoincrement())
+  name        roles            @unique @default(USER)
+  users       User[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  permissions RolePermission[]
+}
+
+enum roles {
+  ADMIN
+  USER
+}
+
+model Permission {
+  id        Int              @id @default(autoincrement())
+  name      String           @unique
+  roles     RolePermission[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  roleId       Int
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade) 
+  permissionId Int
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade) 
+
+  @@unique([roleId, permissionId])
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  description String
+  priority  Priority
+  status    Status
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
