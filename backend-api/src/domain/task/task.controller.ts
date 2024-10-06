@@ -23,13 +23,16 @@ import { RoleGuard } from 'src/core/guards/role.guard';
 //all task related work Here , CRUD METHOD
 @Controller('tasks')
 @ApiTags('Task')
-
-@UseGuards(JwtAuthGuard)
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   //Search Task
   @Get('search')
+  @Post()
+  @UniversalDecorator({
+    role: process.env.ACCESS_ROLE,
+    summary: 'Search Task',
+  })
   async search(@Query() searchTaskDto: SearchTaskDto) {
     console.log('Incoming Search:', searchTaskDto);
     const search = searchTaskDto.search;
@@ -53,6 +56,11 @@ export class TaskController {
 
   //Create a New Task
   @Post()
+  @UniversalDecorator({
+    role: process.env.ACCESS_ROLE,
+    summary: 'Update Task',
+    responseType: CreateTaskDto,
+  })
   async create(@Body() createTaskDto: CreateTaskDto) {
     const response = await this.taskService.create(createTaskDto);
     return createResponse(
@@ -64,6 +72,10 @@ export class TaskController {
 
   //get all tasks
   @Get()
+  @UniversalDecorator({
+    role: process.env.ACCESS_ROLE,
+    summary: 'ALL Tasks',
+  })
   async findAll() {
     const response = await this.taskService.findAll();
     return createResponse(
@@ -75,6 +87,10 @@ export class TaskController {
 
   //get task by id
   @Get(':id')
+  @UniversalDecorator({
+    role: process.env.ACCESS_ROLE,
+    summary: 'Find Task By Id',
+  })
   async findTaskById(@Param('id') id: string) {
     const response = await this.taskService.findtaskByid(+id);
     return createResponse(HttpStatus.OK, 'Task fetched successfully', response);
@@ -82,6 +98,11 @@ export class TaskController {
 
   //update task
   @Patch(':id')
+  @UniversalDecorator({
+    role: process.env.ACCESS_ROLE,
+    summary: 'Update Task',
+    responseType: UpdateTaskDto,
+  })
   async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     const response = await this.taskService.update(+id, updateTaskDto);
     return createResponse(HttpStatus.OK, 'Task updated successfully', response);
@@ -89,6 +110,10 @@ export class TaskController {
 
   //delete task using id
   @Delete(':id')
+  @UniversalDecorator({
+    role: process.env.ACCESS_ROLE,
+    summary: 'Delete Task',
+  })
   async remove(@Param('id') id: string) {
     const response = await this.taskService.remove(+id);
     return createResponse(HttpStatus.OK, 'Task deleted successfully', response);
@@ -97,6 +122,7 @@ export class TaskController {
   //update task using task Status like pending | completed
   @Patch('/updateTask/:id')
   @UniversalDecorator({
+    role: process.env.ACCESS_ROLE,
     summary: 'Update Task',
     responseType: StatusDto,
   })

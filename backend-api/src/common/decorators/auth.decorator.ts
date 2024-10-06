@@ -21,7 +21,7 @@ export function Auth(role: string) {
   return applyDecorators(
     UseGuards(JwtAuthGuard ,RoleGuard),
     Roles(role),
-    ApiBearerAuth(),
+    ApiBearerAuth('JWT-auth')
   );
 }
 

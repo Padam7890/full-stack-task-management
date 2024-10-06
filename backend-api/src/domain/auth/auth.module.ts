@@ -19,10 +19,12 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     UserModule,
-    ThrottlerModule.forRoot([{
-      ttl: 60000,
-      limit: 3,
-    }]),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 3,
+      },
+    ]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
     ConfigModule.forFeature(refreshJwtConfig),
