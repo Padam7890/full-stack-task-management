@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,21 +16,23 @@ import jwt, { Jwt } from "jsonwebtoken";
 
 const Profile = ({ profileMenuItems }: any) => {
   const router = useRouter();
+  const [name, setName] = useState<string | undefined>("Stranger"); 
 
   const logout = (href: string) => {
     clearToken();
     router.push(href);
   };
 
-  const token = getToken();
-  let name: string | undefined = "Stranger";
 
-  if (token) {
-    const decryptToken = jwt.decode(token) as { name?: string };
-    if (decryptToken && decryptToken.name) {
-      name = decryptToken.name;
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      const decryptToken = jwt.decode(token) as { name?: string };
+      if (decryptToken && decryptToken.name) {
+        setName(decryptToken.name);
+      }
     }
-  }
+  }, []);
 
   return (
     <div>

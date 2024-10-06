@@ -32,8 +32,6 @@ export function DataTableConfigToolbar<TData>({ table }: DataTableToolbarProps<T
         const { id, status } = row;
         console.log(`Updating task ID: ${id} with status: ${status}`);
 
-        //if status is already "complete" wont update
-
         if (status === "COMPLETED") {
           continue;
         }
