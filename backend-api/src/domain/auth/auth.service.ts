@@ -74,7 +74,7 @@ export class AuthService {
 
   //create token service
   private async createToken(user: User): Promise<{ access_token: string }> {
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, name: user.name};
     const access_token = await this.jwtService.signAsync(
       payload,
       this.accessTokenConfig,
@@ -84,7 +84,7 @@ export class AuthService {
 
   //create refresh token service
   async createRefreshToken(user: User): Promise<{ refreshToken: string }> {
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, name:user.name };
     const refreshToken = await this.jwtService.signAsync(
       payload,
       this.refreshTokenConfig,

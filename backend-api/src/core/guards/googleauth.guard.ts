@@ -2,6 +2,6 @@
 import { Injectable } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 
-//Google Authentication Guard
+//Google Authentication 
 @Injectable()
 export class GoogleAuthGuard extends AuthGuard('google') {}

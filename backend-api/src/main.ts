@@ -9,8 +9,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 //Main bootstrap function
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors();
- 
+  app.enableCors({
+    origin: process.env.FRONTEND_URL, // Change this to your frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Allow credentials if needed
+  }); 
   app.setViewEngine('ejs');
 
   app.useStaticAssets(join(__dirname, '..', 'public'));

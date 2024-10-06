@@ -8,6 +8,7 @@ import {
   Delete,
   HttpStatus,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -16,14 +17,14 @@ import { CreateTaskDto, SearchTaskDto, StatusDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { UniversalDecorator } from '../../common/decorators/universal.decorator';
 import { createResponse } from '../../helper/response.helper';
+import { JwtAuthGuard } from 'src/core/guards/auth.guard';
+import { RoleGuard } from 'src/core/guards/role.guard';
 
 //all task related work Here , CRUD METHOD
 @Controller('tasks')
 @ApiTags('Task')
-@UniversalDecorator({
-  role: process.env.ACCESS_ROLE,
-  includeBearerAuth: true,
-})
+
+@UseGuards(JwtAuthGuard)
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 

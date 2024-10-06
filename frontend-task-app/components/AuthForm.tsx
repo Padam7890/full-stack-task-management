@@ -96,6 +96,9 @@ const AuthForm = ({ type }: Props) => {
     router,
   ]);
 
+  const googleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google/login`;
+  };
   // Render form
   return (
     <section className="auth-form">
@@ -169,6 +172,9 @@ const AuthForm = ({ type }: Props) => {
 
         <div className="flex justify-center">
           <Button
+            onClick={() => {
+              googleLogin();
+            }}
             variant="outline"
             type="button"
             className="flex items-center gap-2 hover:bg-blue-700 hover:text-white"

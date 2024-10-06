@@ -15,11 +15,10 @@ import { CreateUserDto } from '../user/dto/create-user.dto';
 import { forgetPasswordDTO, resetPasswordDTO, signInDTO } from './dto/auth';
 import { UniversalDecorator } from '../../common/decorators/universal.decorator';
 import { RefreshAuthGuard } from '../../core/guards/refresh-auth.guard';
-import { GoogleAuthGuard } from '../../core/guards/googleauth.guard';
+// import { GoogleAuthGuard } from '../../core/guards/googleauth.guard';
 import { LocalAuthGuard } from '../../core/guards/local-auth.guard';
 import { createResponse } from '../../helper/response.helper';
-
-
+import { GoogleAuthGuard } from 'src/core/guards/googleauth.guard';
 
 // Controller For Authentication Module
 @Controller('auth')
@@ -27,7 +26,7 @@ import { createResponse } from '../../helper/response.helper';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  //signin http method 
+  //signin http method
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   @Post('signin')
@@ -45,14 +44,11 @@ export class AuthController {
       },
     },
   })
-
   async signin(@Req() req) {
     return this.authService.login(req.user);
   }
 
-
-
-  //signup http method 
+  //signup http method
   @HttpCode(HttpStatus.OK)
   @Post('signup')
   @UniversalDecorator({
@@ -75,48 +71,51 @@ export class AuthController {
     return this.authService.createRefreshToken(request.user.id);
   }
 
-
-  //google login http method 
+  //google login http method
   @Get('google/login')
   @UseGuards(GoogleAuthGuard)
   googleLogin() {
-    
 
   }
 
-
-  //google callback http method 
+  //google callback http method
   @ApiExcludeEndpoint()
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
-  async googleCallback(@Req() req , @Res() res) {
-    console.log(req.user)
+  async googleCallback(@Req() req, @Res() res) {
+    console.log(req.user);
     const response = await this.authService.login(req.user);
-    console.log(response)
-    res.redirect(`http://localhost:5173?accesstoken=${response.refresh_token}?refreshtoken= ${response.refresh_token}`)
+    console.log(response);
+    res.redirect(
+      `${process.env.FRONTEND_URL}?accesstoken=${response.access_token}?refreshtoken= ${response.refresh_token}`,
+    );
   }
 
-
-  //forget password http method 
-  @Post("forget-password")
+  //forget password http method
+  @Post('forget-password')
   @UniversalDecorator({
     summary: 'Forget Password',
     responseType: forgetPasswordDTO,
   })
-  async forgetPassword(@Body() forgetPasswordDTO: forgetPasswordDTO){
-  const response = await this.authService.forgetPassword(forgetPasswordDTO.email)
-  return createResponse(HttpStatus.OK, response.message)
+  async forgetPassword(@Body() forgetPasswordDTO: forgetPasswordDTO) {
+    const response = await this.authService.forgetPassword(
+      forgetPasswordDTO.email,
+    );
+    return createResponse(HttpStatus.OK, response.message);
   }
 
-
-  //reset password http method 
-  @Post("reset-password")
+  //reset password http method
+  @Post('reset-password')
   @UniversalDecorator({
     summary: 'Reset Password',
     responseType: resetPasswordDTO,
   })
-  async resetPassword(@Body() resetPasswordDTO: resetPasswordDTO){
-    const response = await this.authService.resetPassword(resetPasswordDTO)
-    return createResponse(HttpStatus.OK, "Password reset successfully", response)
+  async resetPassword(@Body() resetPasswordDTO: resetPasswordDTO) {
+    const response = await this.authService.resetPassword(resetPasswordDTO);
+    return createResponse(
+      HttpStatus.OK,
+      'Password reset successfully',
+      response,
+    );
   }
 }

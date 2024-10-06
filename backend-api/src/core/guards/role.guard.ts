@@ -26,9 +26,12 @@ export class RoleGuard implements CanActivate {
     }
     const request = context.switchToHttp().getRequest();
     const user: User & { role: { name: string } } = request.user;
+    console.log(request)
 
     if (!user) {
-      throw new UnauthorizedException('Unauthorized');
+      console.log("User not found")
+      throw new UnauthorizedException('Unauthorized padam');
+    
     }
     const getUserByEmail: User = await this.userService.findOne(user.email);
     const getRoleNamebyid: Role = await this.userService.getRoleNameByid(

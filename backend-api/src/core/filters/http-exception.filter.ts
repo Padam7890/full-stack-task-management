@@ -9,6 +9,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
+    console.log(response)
     const request = ctx.getRequest<Request>();
 
     const myResponseObj: MyResponseObj = {

@@ -2,7 +2,7 @@ import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { RoleGuard } from '../../core/guards/role.guard';
 import { Roles } from './roles.decorator';
-import { JwtAuthGuard } from '../../core/guards/auth.guard';
+import { JwtAuthGuard } from 'src/core/guards/auth.guard';
 
 /**
  * Auth decorator function
@@ -19,7 +19,7 @@ import { JwtAuthGuard } from '../../core/guards/auth.guard';
 
 export function Auth(role: string) {
   return applyDecorators(
-    UseGuards(JwtAuthGuard, RoleGuard),
+    UseGuards(JwtAuthGuard ,RoleGuard),
     Roles(role),
     ApiBearerAuth(),
   );
