@@ -117,9 +117,9 @@ frontend-task-app/
 
 5. Access the application:
 
-   - Frontend: [http://localhost:3001](http://localhost:3000)
+   - Frontend: [http://localhost:3000](http://localhost:3000)
 
-   - Backend API: [http://localhost:3000](http://localhost:3001)
+   - Backend API: [http://localhost:3001](http://localhost:3001)
 
     - Backend API Swagger Documentation: [http://localhost:3001/api/docs](http://localhost:3001/api/docs)
 
