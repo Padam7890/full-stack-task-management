@@ -77,7 +77,7 @@ frontend-task-app/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/task-management-web-app.git
+   git clone https://github.com/Padam7890/full-stack-task-management
    cd task-management-web-app
    ```
 
