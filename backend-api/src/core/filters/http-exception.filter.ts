@@ -1,14 +1,9 @@
 import { Catch, ArgumentsHost, HttpException, HttpStatus, ExceptionFilter } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { PrismaClientValidationError, PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { MyResponseObj } from '../interfaces/types';
 
-type MyResponseObj = {
-  statusCode: number;
-  timestamp: string;
-  path: string;
-  message: string | object;
-};
-
+//Http error handler
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {

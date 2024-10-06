@@ -8,6 +8,8 @@ import { Reflector } from '@nestjs/core';
 import { Role, User } from '@prisma/client';
 import { UserService } from '../../domain/user/user.service';
 
+
+//Role Guard methods
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(

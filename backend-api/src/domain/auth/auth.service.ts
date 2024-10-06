@@ -18,6 +18,9 @@ import ejs, { renderFile } from 'ejs';
 import { resetPasswordDTO } from './dto/auth';
 import { ifError } from 'assert';
 
+
+
+//Injectable AUth service provider/Auth Service
 @Injectable()
 export class AuthService {
   constructor(

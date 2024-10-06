@@ -6,6 +6,7 @@ import { AllExceptionsFilter } from './core/filters/http-exception.filter';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
+//Main bootstrap function
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();

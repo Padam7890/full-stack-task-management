@@ -19,6 +19,9 @@ import { GoogleAuthGuard } from '../../core/guards/googleauth.guard';
 import { LocalAuthGuard } from '../../core/guards/local-auth.guard';
 import { createResponse } from '../../helper/response.helper';
 
+
+
+// Controller For Authentication Module
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {

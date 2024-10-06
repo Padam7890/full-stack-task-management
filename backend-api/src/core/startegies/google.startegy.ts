@@ -5,6 +5,8 @@ import googleOauthConfig from '../config/google-oauth.config';
 import { ConfigType } from '@nestjs/config';
 import { AuthService } from '../../domain/auth/auth.service';
 
+
+//Injectable Google OAuth Starrtgey
 @Injectable()
 export class GoogleStartegy extends PassportStrategy(Strategy) {
   constructor(

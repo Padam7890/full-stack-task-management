@@ -2,6 +2,8 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Priority, Status } from "@prisma/client";
 import { IsEnum, isEnum, IsNotEmpty, IsString } from "class-validator";
 
+
+//Task validation 
 export class CreateTaskDto {
 
   @ApiProperty()

@@ -7,6 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { User } from '@prisma/client';
 
+//Injectable Permissions Guards
 @Injectable()
 export class PermissionGuard implements CanActivate {
   constructor(private reflector: Reflector) {}

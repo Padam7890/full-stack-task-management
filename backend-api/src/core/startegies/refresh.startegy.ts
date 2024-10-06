@@ -6,6 +6,8 @@ import { ConfigType } from '@nestjs/config';
 import { JwtSignOptions } from '@nestjs/jwt';
 import refreshJwtConfig from '../config/refresh-jwt-config';
 
+
+// This strategy will validate the JWT token for refreshing access token
 @Injectable()
 export class RefreshJwtStrategy extends PassportStrategy(Strategy,"refresh-jwt") {
   constructor(
