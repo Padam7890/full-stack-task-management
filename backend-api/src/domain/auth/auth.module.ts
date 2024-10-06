@@ -23,7 +23,6 @@ import { MailModule } from '../../common/service/mail/mail.module';
     ConfigModule.forFeature(refreshJwtConfig), 
     ConfigModule.forFeature(googleOauthConfig),
     MailModule
-
   ],
   exports: [AuthService, JwtModule], 
   controllers: [AuthController],
