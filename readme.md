@@ -78,7 +78,7 @@ frontend-task-app/
 
    ```bash
    git clone https://github.com/Padam7890/full-stack-task-management
-   cd task-management-web-app
+   cd full-stack-task-management
    ```
 
 2. Set up environment variables for both frontend and backend:
