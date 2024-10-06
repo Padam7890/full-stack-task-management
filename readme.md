@@ -77,8 +77,8 @@ frontend-task-app/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/task-management-web-app.git
-   cd task-management-web-app
+   git clone https://github.com/Padam7890/full-stack-task-management
+   cd full-stack-task-management
    ```
 
 2. Set up environment variables for both frontend and backend:
@@ -117,9 +117,9 @@ frontend-task-app/
 
 5. Access the application:
 
-   - Frontend: [http://localhost:3001](http://localhost:3000)
+   - Frontend: [http://localhost:3000](http://localhost:3000)
 
-   - Backend API: [http://localhost:3000](http://localhost:3001)
+   - Backend API: [http://localhost:3001](http://localhost:3001)
 
     - Backend API Swagger Documentation: [http://localhost:3001/api/docs](http://localhost:3001/api/docs)
 
