@@ -22,6 +22,20 @@ This **Task Management Web App** is built with **NestJS** for the backend and **
 - **Rate Limiting**: Rate-limiting on login requests for security.
 - **Highly Scalable**: Backend designed for scalability.
 
+- ## Tools and Libraries Used
+
+### Frontend
+
+- **State Management**: Used **Redux** for efficient state management, including **RTK Query** for data fetching and caching.
+- **UI Library**: **Shadcn** was used to create a modern, accessible, and responsive UI.
+- **Data Table**: Integrated **tanstack/react-table** to provide a powerful and flexible table with features like pagination, sorting, filtering, and column control.
+
+### Backend
+
+- **JWT for Token Management**: Utilized **JWT** (JSON Web Token) for secure token-based authentication and authorization.
+- **Swagger for API Documentation**: **Swagger** was implemented to provide interactive API documentation, making it easier for developers to test and understand the API.
+- **Prisma ORM for Database**: **Prisma ORM** was used for database management, providing efficient and type-safe database queries.
+
 ### Environment Variables
 
 The environment variables are provided in `.env.example`. Copy it to `.env` and update the values accordingly.
