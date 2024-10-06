@@ -18,7 +18,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   const params = useSearchParams();
   const token = params.get("accesstoken");
   if (token) {
-    // Split the token string to get the access token only
     const accessToken = token.split('?refreshtoken=')[0];
     console.log("Access Token:", accessToken);
     saveToken(accessToken);

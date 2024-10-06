@@ -9,7 +9,7 @@ interface CustomInputProps<TFormValues> {
   name: FieldPath<any>;
   label: string;
   placeholder?: string;
-  type?: string; // to handle different types like text, email, password, etc.
+  type?: string;
   disabled?: boolean;
   required?: boolean;
   autoComplete?: string;

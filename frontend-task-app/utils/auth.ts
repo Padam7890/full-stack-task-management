@@ -3,8 +3,8 @@ import { jwtDecode } from "jwt-decode";
 
 // Define the JWT token type
 interface JwtPayload {
-  iat: number; // Issued at time in seconds since the Unix epoch
-  [key: string]: any; // Additional properties
+  iat: number; 
+  [key: string]: any; 
 }
 
 // Define a constant for token lifespan (in seconds)
@@ -31,8 +31,8 @@ export const getToken = () => {
     // Check if the token is expired
     const expirationDate = getTokenExpirationDate();
     if (expirationDate && new Date() > expirationDate) {
-      clearToken(); // Clear the token if expired
-      redirectToSignIn(); // Redirect to sign-in page
+      clearToken();
+      redirectToSignIn(); 
       return null;
     }
 
@@ -55,13 +55,12 @@ const getJwtExpirationDate = (token?: string): Date | null => {
     const decodedToken = jwtDecode<JwtPayload>(token);
     const iat = decodedToken.iat;
     if (iat) {
-      const expirationDate = new Date(iat * 1000 + TOKEN_LIFESPAN * 1000); // Convert from seconds to milliseconds
-      return expirationDate;
+      const expirationDate = new Date(iat * 1000 + TOKEN_LIFESPAN * 1000); 
     }
   } catch (error) {
     console.error("Error decoding JWT token:", error);
   }
-  return null; // Return null if unable to get the expiration date
+  return null; 
 };
 
 // Function to get the expiration date from sessionStorage

@@ -4,8 +4,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Task } from "./schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActionsEdit } from "./data-table-edit-task";
-import { TrendingUp, TrendingDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export const columns: ColumnDef<Task>[] = [
@@ -90,21 +88,6 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "id",
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title="Id" />
-  //   ),
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="flex w-[100px] items-center">
-  //         <span className="capitalize"> {row.getValue("id")}</span>
-  //       </div>
-  //     );
-  //   },
-  // },
-
-
 
   {
     id: "actions",

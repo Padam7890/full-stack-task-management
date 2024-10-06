@@ -1,8 +1,6 @@
 "use client";
 import { DataTable } from "@/components/data-table-components/data-table";
 import React from "react";
-import fs from "fs";
-import path from "path";
 import { columns } from "@/components/data-table-components/columns";
 import { AddTask } from "@/components/AddTask";
 import { useGetTasksQuery } from "@/redux/api/task/task.api";
