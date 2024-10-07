@@ -4,7 +4,6 @@ import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-
 const Sidebar: FC<sidebarProps> = ({ menuItems }) => {
   const pathname = usePathname();
   return (
@@ -21,7 +20,10 @@ const Sidebar: FC<sidebarProps> = ({ menuItems }) => {
                 ? " bg-blue-500 text-white"
                 : "text-muted-foreground hover:text-primary"
             }`}
-          ></Link>
+          >
+            {menu.icon}
+            {menu.title}
+          </Link>
         );
       })}
     </div>

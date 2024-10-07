@@ -37,6 +37,7 @@ import {
 } from "@/redux/api/task/task.api";
 import { toast } from "react-toastify";
 import { handleError } from "@/utils/errorHandler";
+import Error from "next/error";
 
 interface DataTableRowActionsProps<TData>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -49,9 +50,7 @@ export function DataTableRowActionsEdit<TData>({
   const [open, setOpen] = useState(false);
   const taskId = (row.original as { id: number }).id;
 
-  const {
-    data,
-  } = useGetTaskOneQuery(taskId, {
+  const { data } = useGetTaskOneQuery(taskId, {
     skip: !taskId,
     refetchOnMountOrArgChange: true,
   });
@@ -97,8 +96,7 @@ export function DataTableRowActionsEdit<TData>({
         task: data,
       });
     } catch (error) {
-      toast.error(error as any);
-      console.error("Error updating task:", error);
+      toast.error("something went wrong");
     }
   };
   useEffect(() => {

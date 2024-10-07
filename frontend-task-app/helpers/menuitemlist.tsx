@@ -6,7 +6,7 @@ export const menuItemList:menutItems[] = [
   },
   {
     title: "Task Manage",
-    href: "/task-management",
+    href: "/task-manage",
     icon: <TaskManagement />,
   },
 ];

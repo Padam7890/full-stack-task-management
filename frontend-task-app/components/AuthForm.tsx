@@ -88,6 +88,8 @@ const AuthForm = ({ type }: Props) => {
       handleError(signInError);
     }
   }, [
+    signInData?.access_token,
+    signUpData?.access_token,
     signUpSuccess,
     signInSuccess,
     signUpIsError,

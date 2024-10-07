@@ -54,7 +54,7 @@ const Profile : React.FC<ProfileProps> = ({profileMenuItems}) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {profileMenuItems.map((item: any, index: number) => (
+            {profileMenuItems.map((item, index) => (
               <DropdownMenuItem key={index}>
                 <a
                   onClick={() => logout(item.href)}
@@ -68,7 +68,6 @@ const Profile : React.FC<ProfileProps> = ({profileMenuItems}) => {
         </DropdownMenu>
       ) : (
         <div>
-          //login button below
           <Button variant="link">Sign In</Button>
         </div>
       )}

@@ -53,7 +53,7 @@ const ForgetForm = () => {
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold">Forgot Password</h1>
             <p className="text-gray-500 dark:text-gray-400">
-              Enter your email address and we'll send you a link to reset your
+              Enter your email address and we will send you a link to reset your
               password.
             </p>
           </div>
