@@ -1,4 +1,4 @@
-export const profileItems = [
+export const profileItems:ProfileItem[] = [
   {
     label: "Logout",
     href: "/signin",

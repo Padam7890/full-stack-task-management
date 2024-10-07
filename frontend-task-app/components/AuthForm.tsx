@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -66,6 +66,7 @@ const AuthForm = ({ type }: Props) => {
         await signIn(data).unwrap();
       }
     } catch (error) {
+      console.log(error);
       // Error handling is moved to useEffect
     }
   };

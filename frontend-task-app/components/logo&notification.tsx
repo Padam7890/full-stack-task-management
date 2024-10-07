@@ -1,9 +1,8 @@
 "use client";
 
-import { Bell, Package2 } from "lucide-react";
+import {Package2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { Button } from "./ui/button";
 
 interface Props {
   logoName: string;

@@ -50,9 +50,9 @@ declare interface DataTableFilterOption<TData> {
 }
 
 declare interface Tasks {
- data: Task[];
- message: string;
- statusCode: number;
+  data: Task[];
+  message: string;
+  statusCode: number;
 }
 declare interface TaskOne {
   data: Task;
@@ -60,7 +60,7 @@ declare interface TaskOne {
   statusCode: number;
 }
 
- interface Task {
+interface Task {
   id?: string;
   priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
   title: string;
@@ -75,14 +75,35 @@ declare interface ForgetPassword {
 }
 
 declare interface ForgetPasswordresponse {
-  message:string
+  message: string;
 }
-declare interface ResetPassword{
+declare interface ResetPassword {
   password: string;
   token: string;
 }
-declare interface ResetPasswordResponse{
+declare interface ResetPasswordResponse {
   data: IUser;
   message: string;
   statusCode: number;
+}
+// title: "Dashboard",
+// href: "/",
+// icon: <Home />,
+
+declare interface menutItems {
+  title: string;
+  href: string;
+  icon: ReactNode;
+}
+declare interface ProfileItem {
+  label: string;
+  href: string;
+}
+
+declare interface MobileMenuProps {
+  menuItems: menutItems[];
+  profileMenuItems: ProfileItem[];
+}
+declare interface sidebarProps {
+  menuItems: menutItems[];
 }

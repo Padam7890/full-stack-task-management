@@ -12,9 +12,13 @@ import { Button } from "../components/ui/button";
 import { CircleUser } from "lucide-react";
 import { clearToken, getToken } from "@/utils/auth";
 import { useRouter } from "next/navigation";
-import jwt, { Jwt } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-const Profile = ({ profileMenuItems }: any) => {
+type ProfileProps ={
+  profileMenuItems:ProfileItem[]
+}
+
+const Profile : React.FC<ProfileProps> = ({profileMenuItems}) => {
   const router = useRouter();
   const [name, setName] = useState<string | undefined>("Stranger"); 
 

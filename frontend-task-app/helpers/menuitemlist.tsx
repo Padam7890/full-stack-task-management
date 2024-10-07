@@ -1,4 +1,4 @@
-export const menuItemList = [
+export const menuItemList:menutItems[] = [
   {
     title: "Dashboard",
     href: "/",

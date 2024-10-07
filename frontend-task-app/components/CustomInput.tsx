@@ -1,10 +1,10 @@
 import React from "react";
 import { FormControl, FormField, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-import { Control, FieldPath, FieldValues } from "react-hook-form";
+import { Control, FieldPath } from "react-hook-form";
 
 // CustomInput interface with dynamic input props
-interface CustomInputProps<TFormValues> {
+interface CustomInputProps{
   control: Control<any>;
   name: FieldPath<any>;
   label: string;
@@ -16,7 +16,7 @@ interface CustomInputProps<TFormValues> {
 }
 
 // CustomInput component
-const CustomInput = <TFormValues,>({
+const CustomInput = ({
   control,
   name,
   label,
@@ -25,7 +25,7 @@ const CustomInput = <TFormValues,>({
   disabled = false,
   required = false,
   autoComplete = "off",
-}: CustomInputProps<TFormValues>) => {
+}: CustomInputProps) => {
   return (
     <FormField
       control={control}

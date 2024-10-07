@@ -6,12 +6,10 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CustomInput from "./CustomInput";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,7 +42,7 @@ export function AddTask() {
     },
   });
 
-  const [addTask, { isLoading , isSuccess, isError, error }] = useAddTaskMutation();
+  const [addTask, { isSuccess, isError, error }] = useAddTaskMutation();
 
   const onSubmit = (data: z.infer<typeof TaskSchema>) => {
     console.log(data); 
@@ -62,7 +60,7 @@ useEffect(() => {
     handleError(error);
   }
 
-}, [isSuccess, isError]);
+}, [isSuccess, isError, error]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

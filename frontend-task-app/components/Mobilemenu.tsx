@@ -9,7 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import Sidebar from "./MenuItem";
 import Profile from "./Profile";
 
-const MobileMenu = ({ menuItems, profileMenuItems }: any) => {
+const MobileMenu = ({ menuItems, profileMenuItems }: MobileMenuProps) => {
   return (
     <div>
       <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">

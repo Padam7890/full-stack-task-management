@@ -43,7 +43,7 @@ interface DataTableRowActionsProps<TData>
   row: Row<TData>;
 }
 
-export function DataTableRowActionsEdit<TData, TValue>({
+export function DataTableRowActionsEdit<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const [open, setOpen] = useState(false);
@@ -51,8 +51,6 @@ export function DataTableRowActionsEdit<TData, TValue>({
 
   const {
     data,
-    isLoading: TaskOneLoading,
-    isError: TaskIsError,
   } = useGetTaskOneQuery(taskId, {
     skip: !taskId,
     refetchOnMountOrArgChange: true,

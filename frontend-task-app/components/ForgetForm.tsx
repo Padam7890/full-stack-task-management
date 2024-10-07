@@ -3,14 +3,12 @@
 import CustomInput from "@/components/CustomInput";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import Link from "next/link";
 import { useForgetPasswordMutation } from "@/redux/api/user/user.api";
 import { handleError } from "@/utils/errorHandler";
 import { toast } from "react-toastify";

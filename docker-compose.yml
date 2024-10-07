@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend-api:/src
+    environment:
+      NODE_ENV: development
+
+  frontend:
+    build: ./frontend-task-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend-task-app:/app
+    environment:
+      NODE_ENV: development

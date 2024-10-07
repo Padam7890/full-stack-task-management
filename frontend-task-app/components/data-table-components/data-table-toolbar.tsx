@@ -29,8 +29,6 @@ export function DataTableToolbar<TData>({
   //refetch data all if search item empty how
   const {
     data: SearchData,
-    error,
-    isLoading,
   } = useSearchTaskQuery(debouncedSearchTerm, {
     skip: !debouncedSearchTerm,
   });

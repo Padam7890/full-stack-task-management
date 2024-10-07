@@ -10,7 +10,7 @@ interface DataTableToolbarProps<TData> {
 
 export function DataTableConfigToolbar<TData>({ table }: DataTableToolbarProps<TData>) {
   const [statusUpdate, { isLoading }] = useStatusUpdateMutation();
-  const [deleteTask, { isLoading: delIsLoading, error, isSuccess }] = useDeleteTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
 
   const getSelectedRowsData = () => {
     return table
