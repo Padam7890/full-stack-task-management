@@ -158,16 +158,23 @@ export class UserService {
     });
   }
 
-  async saveCode(addUserToUUId: string, id: number):Promise<AuthorizationCode> {
-    const expiresAt = new Date();
-    const expireDate = expiresAt.setMinutes(expiresAt.getMinutes() + 10);
-    const saveCodeToDB = await this.prisma.authorizationCode.create({
-      data: {
-        code: addUserToUUId,
-        userId: id,
-        expiresAt: new Date(expireDate),
-      },
-    });
-    return saveCodeToDB;
+  async saveCode(
+    addUserToUUId: string,
+    id: number,
+  ): Promise<AuthorizationCode> {
+    try {
+      const expiresAt = new Date();
+      const expireDate = expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+      const saveCodeToDB = await this.prisma.authorizationCode.create({
+        data: {
+          code: addUserToUUId,
+          userId: id,
+          expiresAt: new Date(expireDate),
+        },
+      });
+      return saveCodeToDB;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

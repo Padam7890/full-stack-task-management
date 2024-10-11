@@ -153,8 +153,7 @@ export class AuthService {
     const GenerateUUId = uuidv4();
     const addUserToUUId = GenerateUUId + response.user.id;
     const ResponseCode =  await this.userService.saveCode(addUserToUUId, response.user.id);
+    return ResponseCode;
     
-
-
   }
 }

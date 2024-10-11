@@ -75,9 +75,7 @@ export class AuthController {
   //google login http method
   @Get('google/login')
   @UseGuards(GoogleAuthGuard)
-  googleLogin() {
-
-  }
+  googleLogin() {}
 
   //google callback http method
   @ApiExcludeEndpoint()
@@ -87,10 +85,7 @@ export class AuthController {
     console.log(req.user);
     const response = await this.authService.login(req.user);
     const generateCode = await this.authService.generateCode(response);
-    // console.log(response);
-    // res.redirect(
-    //   `${process.env.FRONTEND_URL}?accesstoken=${response.access_token}?refreshtoken= ${response.refresh_token}`,
-    // );
+    res.redirect(`${process.env.FRONTEND_URL}?code=${generateCode.code}`);
   }
 
   //forget password http method
