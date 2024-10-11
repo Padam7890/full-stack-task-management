@@ -86,10 +86,11 @@ export class AuthController {
   async googleCallback(@Req() req, @Res() res) {
     console.log(req.user);
     const response = await this.authService.login(req.user);
-    console.log(response);
-    res.redirect(
-      `${process.env.FRONTEND_URL}?accesstoken=${response.access_token}?refreshtoken= ${response.refresh_token}`,
-    );
+    const generateCode = await this.authService.generateCode(response);
+    // console.log(response);
+    // res.redirect(
+    //   `${process.env.FRONTEND_URL}?accesstoken=${response.access_token}?refreshtoken= ${response.refresh_token}`,
+    // );
   }
 
   //forget password http method

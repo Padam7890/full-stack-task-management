@@ -8,16 +8,27 @@ datasource db {
 }
 
 model User {
-  id                       Int       @id @default(autoincrement())
+  id                       Int                 @id @default(autoincrement())
   name                     String
-  email                    String    @unique
+  email                    String              @unique
   password                 String
-  createdAt                DateTime  @default(now())
+  createdAt                DateTime            @default(now())
   passwordChangedAt        DateTime?
   passwordResetToken       String?
   passwordResetTokenExpire DateTime?
-  role                     Role      @relation(fields: [roleId], references: [id], onDelete: Cascade) 
+  role                     Role                @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId                   Int
+  AuthorizationCode        AuthorizationCode[]
+}
+
+model AuthorizationCode {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  userId    Int 
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model Role {
@@ -45,21 +56,21 @@ model Permission {
 model RolePermission {
   id           Int        @id @default(autoincrement())
   roleId       Int
-  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade) 
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   permissionId Int
-  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade) 
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
 
   @@unique([roleId, permissionId])
 }
 
 model Task {
-  id        Int      @id @default(autoincrement())
-  title     String
+  id          Int      @id @default(autoincrement())
+  title       String
   description String
-  priority  Priority
-  status    Status
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  priority    Priority
+  status      Status
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum Priority {

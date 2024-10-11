@@ -16,8 +16,8 @@ import { MailService } from '../../common/service/mail/mail.service';
 import path, { join } from 'path';
 import ejs, { renderFile } from 'ejs';
 import { resetPasswordDTO } from './dto/auth';
-import { ifError } from 'assert';
-
+import {IUserResponse} from "../../core/interfaces/types"
+import { v4 as uuidv4 } from 'uuid';
 
 
 //Injectable AUth service provider/Auth Service
@@ -148,5 +148,13 @@ export class AuthService {
       resetPasswordDTO.password,
     );
     return updatePassword;
+  }
+  async generateCode(response: IUserResponse){
+    const GenerateUUId = uuidv4();
+    const addUserToUUId = GenerateUUId + response.user.id;
+    const ResponseCode =  await this.userService.saveCode(addUserToUUId, response.user.id);
+    
+
+
   }
 }

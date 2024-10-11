@@ -7,17 +7,17 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { DatabaseService } from '../../database/database.service';
-import { Prisma, Role, User } from '@prisma/client';
+import { AuthorizationCode, Prisma, Role, User } from '@prisma/client';
 import { hashPassword } from '../../utils/hash-password';
 import { roleEnums } from '../../core/interfaces/types';
 import * as crypto from 'crypto';
 
 @Injectable()
 export class UserService {
-  //service injection 
+  //service injection
   constructor(private prisma: DatabaseService) {}
 
-  //create user service 
+  //create user service
   async create(data: CreateUserDto): Promise<User> {
     const existingUser = await this.findOne(data.email);
     if (existingUser) {
@@ -43,7 +43,7 @@ export class UserService {
     return savedata;
   }
 
-  //get all user service 
+  //get all user service
   findAll(): Promise<User[]> {
     return this.prisma.user.findMany({
       include: {
@@ -51,7 +51,7 @@ export class UserService {
       },
     });
   }
-  //get user by email service 
+  //get user by email service
   async findOne(email: string) {
     if (!email) {
       throw new BadRequestException('Please provide a valid email address');
@@ -59,12 +59,12 @@ export class UserService {
     return await this.prisma.user.findUnique({ where: { email } });
   }
 
-  //get user by email service 
+  //get user by email service
   async findByEmail(email: string) {
     return await this.prisma.user.findUnique({ where: { email } });
   }
 
-  //get user by id service 
+  //get user by id service
   findoneByid(id: number): Promise<User> {
     return this.prisma.user.findUnique({
       where: { id },
@@ -74,7 +74,7 @@ export class UserService {
     });
   }
 
-  //update user service 
+  //update user service
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
@@ -82,26 +82,26 @@ export class UserService {
     });
   }
 
-  //delete user service 
+  //delete user service
   remove(id: number): Promise<User> {
     return this.prisma.user.delete({ where: { id } });
   }
 
-  //get role by name service 
+  //get role by name service
   async getRoleByName(roleName: roleEnums): Promise<Role> {
     return await this.prisma.role.findUnique({
       where: { name: roleName },
     });
   }
 
-  //get role name by id service 
+  //get role name by id service
   async getRoleNameByid(id: number): Promise<Role> {
     return await this.prisma.role.findUnique({
       where: { id },
     });
   }
 
-  //reset password token service 
+  //reset password token service
   async resetPasswordToken(id: number): Promise<User> {
     const resetToken = crypto.randomBytes(32).toString('hex');
     const hashedToken = crypto
@@ -122,11 +122,11 @@ export class UserService {
       throw new BadRequestException('Failed to generate reset token');
     }
   }
-  //find user by token service 
-  async findByToken (hashedToken: string) {
+  //find user by token service
+  async findByToken(hashedToken: string) {
     console.log(hashedToken);
-    const getUser= await this.prisma.user.findFirst({
-      where: { 
+    const getUser = await this.prisma.user.findFirst({
+      where: {
         passwordResetToken: hashedToken,
         passwordResetTokenExpire: {
           gt: new Date(),
@@ -139,7 +139,7 @@ export class UserService {
     return getUser;
   }
 
-  //update password service 
+  //update password service
   async updatePassword(token: string, newPassword: string): Promise<User> {
     const user = await this.findByToken(token);
     console.log(user);
@@ -155,7 +155,19 @@ export class UserService {
         passwordResetToken: null,
         passwordResetTokenExpire: null,
       },
-    }); 
+    });
   }
 
+  async saveCode(addUserToUUId: string, id: number):Promise<AuthorizationCode> {
+    const expiresAt = new Date();
+    const expireDate = expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+    const saveCodeToDB = await this.prisma.authorizationCode.create({
+      data: {
+        code: addUserToUUId,
+        userId: id,
+        expiresAt: new Date(expireDate),
+      },
+    });
+    return saveCodeToDB;
+  }
 }
