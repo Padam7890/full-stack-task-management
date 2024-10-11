@@ -14,11 +14,14 @@ import { LocalStrategy } from '../../core/startegies/local.startegy';
 import { MailModule } from '../../common/service/mail/mail.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { GoogleAuthService } from './google-auth.service';
+import { DatabaseModule } from 'src/database/database.module';
 
 // Auth module
 @Module({
   imports: [
     UserModule,
+    DatabaseModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -39,6 +42,7 @@ import { APP_GUARD } from '@nestjs/core';
     JwtStrategy,
     RefreshJwtStrategy,
     GoogleStartegy,
+    GoogleAuthService,
   ],
 })
 export class AuthModule {}

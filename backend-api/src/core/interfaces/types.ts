@@ -1,4 +1,6 @@
 //types
+import { AuthorizationCode, User } from '@prisma/client';
+
 
 export enum roleEnums {
   USER = 'USER',
@@ -32,4 +34,9 @@ export interface IUserResponse {
       roleId: number;
     };
   
+}
+
+
+export interface AuthorizationCodeWithUser extends AuthorizationCode {
+  user: User; 
 }

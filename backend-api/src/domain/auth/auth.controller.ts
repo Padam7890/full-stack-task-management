@@ -69,7 +69,8 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   async refreshToken(@Req() request) {
-    return this.authService.createRefreshToken(request.user.id);
+    const response = await this.authService.createRefreshToken(request.user.id);
+    return createResponse(HttpStatus.OK, "Refresh Token", response);
   }
 
   //google login http method
@@ -87,6 +88,20 @@ export class AuthController {
     const generateCode = await this.authService.generateCode(response);
     res.redirect(`${process.env.FRONTEND_URL}?code=${generateCode.code}`);
   }
+
+
+
+  @Post("exchange-code")
+  @UniversalDecorator({
+    summary: 'Exchange code to Token',
+    responseType: forgetPasswordDTO,
+
+  })
+  async exchangeCode(@Body() code:string ){
+    const token = await this.authService.exchangeCodeWithToken(code);
+    return createResponse(HttpStatus.OK, "User Fetched Successfully", token);
+  }
+
 
   //forget password http method
   @Post('forget-password')

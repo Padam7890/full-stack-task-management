@@ -16,16 +16,15 @@ import { MailService } from '../../common/service/mail/mail.service';
 import path, { join } from 'path';
 import ejs, { renderFile } from 'ejs';
 import { resetPasswordDTO } from './dto/auth';
-import {IUserResponse} from "../../core/interfaces/types"
+import { IUserResponse } from '../../core/interfaces/types';
 import { v4 as uuidv4 } from 'uuid';
+import { GoogleAuthService } from './google-auth.service';
 
-
-//Injectable AUth service provider/Auth Service
 @Injectable()
 export class AuthService {
   constructor(
-    // service injection
     private userService: UserService,
+    private googleAuthService: GoogleAuthService,
     private jwtService: JwtService,
     @Inject(refreshJwtConfig.KEY)
     private refreshTokenConfig: ConfigType<typeof refreshJwtConfig>,
@@ -34,91 +33,79 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
-  //signup Service
+  // Signup Service
   async signUp(data: CreateUserDto): Promise<any> {
     const user = await this.userService.create(data);
-    const token = await this.createToken(user);
-    const refresh_token = await this.createRefreshToken(user);
-    console.log(token, refresh_token);
+    const { access_token, refresh_token } = await this.createTokens(user);
 
     return {
       message: 'User SignUp Successfully',
-      access_token: token.access_token,
-      refresh_token: refresh_token.refreshToken,
-      user: user,
+      access_token,
+      refresh_token,
+      user,
     };
   }
 
-  //validate user service
-  async validateUser(email: string, password: string) {
+  // Validate user
+  async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userService.findByEmail(email);
     if (!user) throw new UnauthorizedException('User not found!');
+
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch)
       throw new UnauthorizedException('Invalid credentials');
-
     return user;
   }
 
-  //login service
-  async login(user: User) {
-    const token = await this.createToken(user);
-    const refresh_token = await this.createRefreshToken(user);
+  // Login Service
+  async login(user: User): Promise<any> {
+    const { access_token, refresh_token } = await this.createTokens(user);
     return {
       message: 'User SignIn Successfully',
-      access_token: token.access_token,
-      refresh_token: refresh_token.refreshToken,
-      user: user,
+      access_token,
+      refresh_token,
+      user,
     };
   }
 
-  //create token service
-  private async createToken(user: User): Promise<{ access_token: string }> {
-    const payload = { sub: user.id, email: user.email, name: user.name};
-    const access_token = await this.jwtService.signAsync(
-      payload,
-      this.accessTokenConfig,
-    );
-    return { access_token };
+  // Generate both tokens: access and refresh
+  private async createTokens(
+    user: User,
+  ): Promise<{ access_token: string; refresh_token: string }> {
+    const access_token = await this.createAccessToken(user);
+    const refresh_token = await this.createRefreshToken(user);
+    return { access_token, refresh_token };
   }
 
-  //create refresh token service
-  async createRefreshToken(user: User): Promise<{ refreshToken: string }> {
-    const payload = { sub: user.id, email: user.email, name:user.name };
-    const refreshToken = await this.jwtService.signAsync(
-      payload,
-      this.refreshTokenConfig,
-    );
-    return { refreshToken };
+  // Create only access token
+  private async createAccessToken(user: User): Promise<string> {
+    const payload = { sub: user.id, email: user.email, name: user.name };
+    return this.jwtService.signAsync(payload, this.accessTokenConfig);
   }
 
-  //validate google user service
+  // Create only refresh token
+  async createRefreshToken(user: User): Promise<string> {
+    const payload = { sub: user.id, email: user.email, name: user.name };
+    return this.jwtService.signAsync(payload, this.refreshTokenConfig);
+  }
+
+  // Google user validation
   async validateGoogleUser(googleUser: CreateUserDto): Promise<User> {
-    console.log('email:' + googleUser.email);
-    if (!googleUser.email) {
-      console.error('No email provided');
-      throw new Error('Please provide a valid email');
-    }
+    if (!googleUser.email) throw new Error('Please provide a valid email');
     const user = await this.userService.findByEmail(googleUser.email);
-    console.log(user);
     if (user) return user;
-    const createUser = await this.userService.create(googleUser);
-    console.log(createUser);
-    return createUser;
+    return await this.userService.create(googleUser);
   }
 
   // Forget password service
   async forgetPassword(email: string): Promise<{ message: string }> {
     const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw new UnauthorizedException('User not found!');
-    }
+    if (!user) throw new UnauthorizedException('User not found!');
     const resetToken = await this.userService.resetPasswordToken(user.id);
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken.passwordResetToken}`;
-
-    const html = await renderFile(
-      join(__dirname, '..', '..', 'views', 'forget-password.ejs'),
-      { getUserName: user.name, resetUrl }, 
+    const html = await ejs.renderFile(
+      path.join(__dirname, '..', '..', 'views', 'forget-password.ejs'),
+      { getUserName: user.name, resetUrl },
     );
 
     try {
@@ -127,7 +114,6 @@ export class AuthService {
         'Reset Password',
         html,
       );
-
       return {
         message: success
           ? 'Reset password email sent successfully.'
@@ -141,19 +127,38 @@ export class AuthService {
     }
   }
 
-  //reset password service
+  // Reset password service
   async resetPassword(resetPasswordDTO: resetPasswordDTO): Promise<User> {
-    const updatePassword = await this.userService.updatePassword(
+    return this.userService.updatePassword(
       resetPasswordDTO.token,
       resetPasswordDTO.password,
     );
-    return updatePassword;
   }
-  async generateCode(response: IUserResponse){
-    const GenerateUUId = uuidv4();
-    const addUserToUUId = GenerateUUId + response.user.id;
-    const ResponseCode =  await this.userService.saveCode(addUserToUUId, response.user.id);
-    return ResponseCode;
-    
+
+  // Generate unique code
+  async generateCode(response: IUserResponse) {
+    const generateUuid = uuidv4();
+    const addUserToUuid = generateUuid + response.user.id;
+    return this.googleAuthService.saveCode(addUserToUuid, response.user.id);
+  }
+
+  // Exchange authorization code for tokens
+  async exchangeCodeWithToken(
+    code: string,
+  ): Promise<{ access_token: string; refresh_token: string }> {
+    const authorizationCode =
+      await this.googleAuthService.findoneAuthCode(code);
+    if (
+      !authorizationCode ||
+      authorizationCode.expiresAt < new Date() ||
+      authorizationCode.used
+    ) {
+      throw new UnauthorizedException('Auth Code expired or invalid');
+    }
+    const { access_token, refresh_token } = await this.createTokens(
+      authorizationCode.user,
+    );
+    await this.googleAuthService.deleteAuthCode(authorizationCode.id);
+    return { access_token, refresh_token };
   }
 }
