@@ -8,7 +8,7 @@ import { handleError } from "@/utils/errorHandler";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useCallback } from "react";
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const [exchangeAuthCode, { data, isError, error, isSuccess }] =
     useGoogleAUthCodeMutation();
   const dispatch = useAppDispatch();
@@ -17,29 +17,38 @@ const Dashboard = () => {
   const params = useSearchParams();
   const router = useRouter();
   const code = params.get("code");
-  const navigateToSignIn = useCallback(() => router.push("/signin"), [router]);
+  const localToken = getToken();
+
+  const navigateToSignIn = useCallback(() => {
+    router.push("/signin");
+  }, [router]);
 
   const handleAuthCode = useCallback(async () => {
-    if (code) await exchangeAuthCode({ code });
+    if (code) {
+      try {
+        await exchangeAuthCode({ code });
+      } catch (err) {
+        handleError(err);
+      }
+    }
   }, [code, exchangeAuthCode]);
 
   useEffect(() => {
-    if (!token && !code) {
-      navigateToSignIn();
-    } else if (code && !token) {
-      handleAuthCode();
+    if (!localToken) {
+      code ? handleAuthCode() : navigateToSignIn();
     }
-  }, [token, code, handleAuthCode, navigateToSignIn]);
+  }, [localToken, code, handleAuthCode, navigateToSignIn]);
 
   useEffect(() => {
-    if (isSuccess) {
-      console.log(data);
-      dispatch(setToken(data.data.access_token));
+    if (isSuccess && data?.data?.access_token) {
+      const accessToken = data.data.access_token;
+      dispatch(setToken(accessToken));
+      saveToken(accessToken); 
       router.push("/");
     } else if (isError) {
       handleError(error);
     }
-  }, [isSuccess, isError, data, error, router]);
+  }, [isSuccess, isError, data, error, dispatch, router]);
 
   return <div>Dashboard page</div>;
 };

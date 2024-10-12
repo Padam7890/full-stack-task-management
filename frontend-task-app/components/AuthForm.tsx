@@ -17,6 +17,8 @@ import {
 import { handleError } from "@/utils/errorHandler";
 import { saveToken } from "@/utils/auth";
 import { AuthformSchema } from "@/lib/schema";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setToken } from "@/redux/slices/authSlice";
 interface Props {
   type: "sign-in" | "sign-up";
 }
@@ -24,6 +26,9 @@ interface Props {
 // AuthForm component
 const AuthForm = ({ type }: Props) => {
   const router = useRouter();
+  
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.auth.token);
 
   const formSchema = AuthformSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -74,11 +79,11 @@ const AuthForm = ({ type }: Props) => {
   // Save token to sessionStorage
   useEffect(() => {
     if (signUpSuccess) {
-      saveToken(signUpData?.access_token);
+      dispatch(setToken(signUpData?.access_token))
       router.push("/");
     }
     if (signInSuccess) {
-      saveToken(signInData?.access_token);
+      dispatch(setToken(signInData?.access_token))
       router.push("/");
     }
     if (signUpIsError) {
