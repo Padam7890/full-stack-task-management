@@ -107,3 +107,16 @@ declare interface MobileMenuProps {
 declare interface sidebarProps {
   menuItems: menutItems[];
 }
+
+declare interface GoogleAuthCode {
+  code: string;
+}
+
+declare interface GoogleAuthResponse {
+  data: {
+    access_token: string;
+    refresh_token: string;
+  };
+  message: string;
+  statusCode: number;
+}

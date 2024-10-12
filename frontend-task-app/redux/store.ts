@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { userApi } from "./api/user/user.api";
 import { taskApi } from "./api/task/task.api";
+import authReducer from "./slices/authSlice";
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     [userApi.reducerPath]: userApi.reducer,
     [taskApi.reducerPath]: taskApi.reducer,
   },

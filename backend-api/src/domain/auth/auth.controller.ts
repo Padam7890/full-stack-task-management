@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   Res,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
@@ -83,7 +84,6 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(GoogleAuthGuard)
   async googleCallback(@Req() req, @Res() res) {
-    console.log(req.user);
     const response = await this.authService.login(req.user);
     const generateCode = await this.authService.generateCode(response);
     res.redirect(`${process.env.FRONTEND_URL}?code=${generateCode.code}`);
@@ -96,8 +96,10 @@ export class AuthController {
     summary: 'Exchange code to Token',
     responseType: ExchangeCode,
   })
-  async exchangeCode(@Body() exchangeCode:ExchangeCode ){
-    const token = await this.authService.exchangeCodeWithToken(exchangeCode.code);
+  async exchangeCode(@Body() code:ExchangeCode ){
+    console.log(code.code)
+    const token = await this.authService.exchangeCodeWithToken(code.code);
+    console.log(token)
     return createResponse(HttpStatus.OK, "User Fetched Successfully", token);
   }
 

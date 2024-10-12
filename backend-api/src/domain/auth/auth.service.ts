@@ -139,15 +139,15 @@ export class AuthService {
   async generateCode(response: IUserResponse) {
     const generateUuid = uuidv4();
     const addUserToUuid = generateUuid + response.user.id;
-    return this.googleAuthService.saveCode(addUserToUuid, response.user.id);
+    return this.googleAuthService.saveCode(response.user.id, addUserToUuid);
   }
 
   // Exchange authorization code for tokens
   async exchangeCodeWithToken(
     code: string,
   ): Promise<{ access_token: string; refresh_token: string }> {
-    const authorizationCode =
-      await this.googleAuthService.findoneAuthCode(code);
+    const authorizationCode = await this.googleAuthService.findOneByCode(code);
+
     if (
       !authorizationCode.code ||
       authorizationCode.expiresAt < new Date() ||
@@ -158,7 +158,7 @@ export class AuthService {
     const { access_token, refresh_token } = await this.createTokens(
       authorizationCode.user,
     );
-    await this.googleAuthService.deleteAuthCode(authorizationCode.id);
+    await this.googleAuthService.updateAuthCode(authorizationCode.code);
     return { access_token, refresh_token };
   }
 }

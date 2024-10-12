@@ -29,7 +29,6 @@ export const userApi = createApi({
         method: "POST",
         body: email,
       }),
-
     }),
     resetPassword: builder.mutation<ResetPasswordResponse, ResetPassword>({
       query: (resetPassword) => ({
@@ -38,9 +37,21 @@ export const userApi = createApi({
         body: resetPassword,
       }),
     }),
-  
+    googleAUthCode: builder.mutation<GoogleAuthResponse, GoogleAuthCode>({
+      query: (code) => ({
+        url: "/auth/exchange-code",
+        method: "POST",
+        body: code,
+      }),
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useSignUpMutation, useSignInMutation ,useForgetPasswordMutation,useResetPasswordMutation} =
-  userApi;
+export const {
+  useGetUsersQuery,
+  useSignUpMutation,
+  useSignInMutation,
+  useForgetPasswordMutation,
+  useResetPasswordMutation,
+  useGoogleAUthCodeMutation
+} = userApi;

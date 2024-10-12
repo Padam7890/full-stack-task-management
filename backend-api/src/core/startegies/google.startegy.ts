@@ -26,7 +26,6 @@ export class GoogleStartegy extends PassportStrategy(Strategy) {
     profile: any,
     done: VerifyCallback,
   ) {
-    console.log('Google Profile:', profile); 
     try {
       if (!profile.emails || !profile.emails.length) {
         throw new Error('No email found in profile');

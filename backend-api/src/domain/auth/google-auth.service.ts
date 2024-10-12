@@ -7,31 +7,62 @@ import { DatabaseService } from 'src/database/database.service';
 export class GoogleAuthService {
   constructor(private readonly prisma: DatabaseService) {}
 
-  async saveCode(
-    addUserToUUId: string,
-    id: number,
-  ): Promise<AuthorizationCode> {
-      const expiresAt = new Date();
-      const expireDate = expiresAt.setMinutes(expiresAt.getMinutes() + 10);
-      return await this.prisma.authorizationCode.create({
-        data: {
-          code: addUserToUUId,
-          userId: id,
-          expiresAt: new Date(expireDate),
-        },
-      });
+  private static CODE_EXPIRY_MINUTES = 10;
+
+  async saveCode(userId: number, code: string): Promise<AuthorizationCode> {
+    const expiresAt = this.calculateExpiry(
+      GoogleAuthService.CODE_EXPIRY_MINUTES,
+    );
+
+    return this.prisma.authorizationCode.create({
+      data: { code, userId, expiresAt },
+    });
   }
-  async findoneAuthCode(code: string): Promise<AuthorizationCodeWithUser> {
-      return await this.prisma.authorizationCode.findUnique({
-        where: { code },
-        include: {
-          user: true,
-        },
-      });
+
+  async findOneByCode(code: string): Promise<AuthorizationCodeWithUser> {
+    const authCode = await this.prisma.authorizationCode.findUnique({
+      where: { code },
+      include: { user: true },
+    });
+
+    if (!authCode) {
+      throw new BadRequestException('Authorization code not found');
+    }
+    return authCode;
   }
-  async deleteAuthCode(id: number): Promise<AuthorizationCode> {
-      return await this.prisma.authorizationCode.delete({
-        where: { id },
-      });
+
+  async updateAuthCode(code: string): Promise<AuthorizationCode> {
+    const authCode = await this.findOneByCode(code);
+    return this.prisma.authorizationCode.update({
+      where: { code },
+      data: { used: true },
+    });
+  }
+
+  async findOneById(id: number): Promise<AuthorizationCodeWithUser> {
+    if (!id) {
+      throw new BadRequestException('Missing authorization code ID');
+    }
+
+    const authCode = await this.prisma.authorizationCode.findUnique({
+      where: { id },
+      include: { user: true },
+    });
+
+    if (!authCode) {
+      throw new BadRequestException('Authorization code not found');
+    }
+    return authCode;
+  }
+
+  async deleteAuthCode(code: string): Promise<AuthorizationCode> {
+    await this.findOneByCode(code);
+    return this.prisma.authorizationCode.delete({ where: { code } });
+  }
+
+  private calculateExpiry(minutes: number): Date {
+    const expiry = new Date();
+    expiry.setMinutes(expiry.getMinutes() + minutes);
+    return expiry;
   }
 }
