@@ -149,7 +149,7 @@ export class AuthService {
     const authorizationCode =
       await this.googleAuthService.findoneAuthCode(code);
     if (
-      !authorizationCode ||
+      !authorizationCode.code ||
       authorizationCode.expiresAt < new Date() ||
       authorizationCode.used
     ) {

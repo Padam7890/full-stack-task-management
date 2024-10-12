@@ -12,7 +12,7 @@ import {
 import { AuthService } from './auth.service';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import { forgetPasswordDTO, resetPasswordDTO, signInDTO } from './dto/auth';
+import { ExchangeCode, forgetPasswordDTO, resetPasswordDTO, signInDTO } from './dto/auth';
 import { UniversalDecorator } from '../../common/decorators/universal.decorator';
 import { RefreshAuthGuard } from '../../core/guards/refresh-auth.guard';
 import { LocalAuthGuard } from '../../core/guards/local-auth.guard';
@@ -94,11 +94,10 @@ export class AuthController {
   @Post("exchange-code")
   @UniversalDecorator({
     summary: 'Exchange code to Token',
-    responseType: forgetPasswordDTO,
-
+    responseType: ExchangeCode,
   })
-  async exchangeCode(@Body() code:string ){
-    const token = await this.authService.exchangeCodeWithToken(code);
+  async exchangeCode(@Body() exchangeCode:ExchangeCode ){
+    const token = await this.authService.exchangeCodeWithToken(exchangeCode.code);
     return createResponse(HttpStatus.OK, "User Fetched Successfully", token);
   }
 

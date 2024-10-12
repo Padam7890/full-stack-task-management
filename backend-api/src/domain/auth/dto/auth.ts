@@ -34,3 +34,10 @@ export class resetPasswordDTO{
     @ApiProperty()
     token: string;
 }
+
+export class ExchangeCode {
+    @IsNotEmpty()
+    @IsString()
+    @ApiProperty()
+    code: string;
+}

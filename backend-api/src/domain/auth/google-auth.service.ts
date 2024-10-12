@@ -11,7 +11,6 @@ export class GoogleAuthService {
     addUserToUUId: string,
     id: number,
   ): Promise<AuthorizationCode> {
-    try {
       const expiresAt = new Date();
       const expireDate = expiresAt.setMinutes(expiresAt.getMinutes() + 10);
       return await this.prisma.authorizationCode.create({
@@ -21,29 +20,18 @@ export class GoogleAuthService {
           expiresAt: new Date(expireDate),
         },
       });
-    } catch (error) {
-      throw new BadRequestException('Failed to create authorization code');
-    }
   }
   async findoneAuthCode(code: string): Promise<AuthorizationCodeWithUser> {
-    try {
       return await this.prisma.authorizationCode.findUnique({
         where: { code },
         include: {
           user: true,
         },
       });
-    } catch (error) {
-      throw new BadRequestException('Faile to Find Auth Code');
-    }
   }
   async deleteAuthCode(id: number): Promise<AuthorizationCode> {
-    try {
       return await this.prisma.authorizationCode.delete({
         where: { id },
       });
-    } catch (error) {
-      throw new BadRequestException('Failed to delete Auth Code');
-    }
   }
 }
