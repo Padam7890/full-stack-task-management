@@ -43,7 +43,6 @@ const Dashboard: React.FC = () => {
     if (isSuccess && data?.data?.access_token) {
       const accessToken = data.data.access_token;
       dispatch(setToken(accessToken));
-      saveToken(accessToken); 
       router.push("/");
     } else if (isError) {
       handleError(error);
