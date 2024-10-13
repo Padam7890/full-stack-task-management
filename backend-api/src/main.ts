@@ -6,13 +6,18 @@ import { AllExceptionsFilter } from './core/filters/http-exception.filter';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
+/*------------------------------------------------
+  @ BY PADAM THAPA
+ -------------------------------------------------                                                  
+*/
+
 //Main bootstrap function
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
-    origin: process.env.FRONTEND_URL, // Change this to your frontend URL
+    origin: process.env.FRONTEND_URL, 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow credentials if needed
+    credentials: true, 
   }); 
   app.setViewEngine('ejs');
 
