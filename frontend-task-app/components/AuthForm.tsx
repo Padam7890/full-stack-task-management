@@ -15,18 +15,14 @@ import {
   useSignUpMutation,
 } from "@/redux/api/user/user.api";
 import { handleError } from "@/utils/errorHandler";
-import { saveToken } from "@/utils/auth";
 import { AuthformSchema } from "@/lib/schema";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setToken } from "@/redux/slices/authSlice";
-interface Props {
-  type: "sign-in" | "sign-up";
-}
+
 
 // AuthForm component
-const AuthForm = ({ type }: Props) => {
+const AuthForm = ({ type }: AuthFromProps) => {
   const router = useRouter();
-  
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.auth.token);
 
@@ -39,7 +35,6 @@ const AuthForm = ({ type }: Props) => {
     },
   });
 
-  // Sign up mutation Using RTK Query
   const [
     signUp,
     {
@@ -72,7 +67,6 @@ const AuthForm = ({ type }: Props) => {
       }
     } catch (error) {
       console.log(error);
-      // Error handling is moved to useEffect
     }
   };
 

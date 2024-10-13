@@ -34,16 +34,7 @@ export class TaskController {
     summary: 'Search Task',
   })
   async search(@Query() searchTaskDto: SearchTaskDto) {
-    console.log('Incoming Search:', searchTaskDto);
-    const search = searchTaskDto.search;
-
-    if (!search) {
-      return createResponse(HttpStatus.OK, 'Task fetched successfully', []);
-    }
-
-    const response = await this.taskService.search(search);
-    console.log('Search Response:', response);
-
+    const response = await this.taskService.search(searchTaskDto.search);
     if (response.length === 0) {
       return createResponse(HttpStatus.NOT_FOUND, 'No task found', response);
     }

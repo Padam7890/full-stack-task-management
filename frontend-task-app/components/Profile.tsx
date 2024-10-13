@@ -16,9 +16,6 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { clearTokens, getTokens } from "@/redux/slices/authSlice";
 
-type ProfileProps = {
-  profileMenuItems: ProfileItem[];
-};
 
 const Profile: React.FC<ProfileProps> = ({ profileMenuItems }) => {
   const router = useRouter();

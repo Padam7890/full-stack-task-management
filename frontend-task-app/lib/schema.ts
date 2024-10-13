@@ -7,6 +7,9 @@ export const AuthformSchema = (type: string) =>
     password: z.string().min(8),
   });
 
+  
+
+
 export const TaskSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   description: z.string().min(1, { message: "Description is required" }),

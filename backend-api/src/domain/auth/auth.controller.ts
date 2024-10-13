@@ -97,9 +97,7 @@ export class AuthController {
     responseType: ExchangeCode,
   })
   async exchangeCode(@Body() code:ExchangeCode ){
-    console.log(code.code)
     const token = await this.authService.exchangeCodeWithToken(code.code);
-    console.log(token)
     return createResponse(HttpStatus.OK, "User Fetched Successfully", token);
   }
 

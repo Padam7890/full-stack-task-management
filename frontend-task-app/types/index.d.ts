@@ -120,3 +120,13 @@ declare interface GoogleAuthResponse {
   message: string;
   statusCode: number;
 }
+
+
+declare interface AuthFromProps {
+  type: "sign-in" | "sign-up";
+}
+
+declare interface ProfileProps {
+  profileMenuItems: ProfileItem[];
+};
+
