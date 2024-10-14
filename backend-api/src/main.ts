@@ -58,6 +58,6 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document,{
     jsonDocumentUrl: "api/docs/json",
   });
-  await app.listen(3002);
+  await app.listen(3001);
 }
 bootstrap();

@@ -6,10 +6,19 @@ declare interface IUser {
   role?: string | undefined;
 }
 declare interface IUserResponse {
-  user: IUser;
-  access_token: string;
-  refresh_token: string;
+  data: {
+    access_token: string;
+    refresh_token: string;
+    user: IUser
+  }
   message: string;
+  statusCode: number;
+}
+
+declare interface SigInUser {
+user: IUser;
+access_token: string;
+refresh_token: string;
 }
 
 interface ErrorDetail {

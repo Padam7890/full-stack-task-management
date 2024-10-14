@@ -73,7 +73,7 @@ const AuthForm = ({ type }: AuthFromProps) => {
   // Save token to sessionStorage
   useEffect(() => {
     if (signUpSuccess) {
-      dispatch(setToken(signUpData?.access_token))
+      dispatch(setToken(signUpData?.data.access_token))
       router.push("/");
     }
     if (signInSuccess) {
@@ -88,7 +88,7 @@ const AuthForm = ({ type }: AuthFromProps) => {
     }
   }, [
     signInData?.access_token,
-    signUpData?.access_token,
+    signUpData?.data.access_token,
     signUpSuccess,
     signInSuccess,
     signUpIsError,
