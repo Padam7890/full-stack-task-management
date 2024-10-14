@@ -8,7 +8,6 @@ import {
   UseGuards,
   Req,
   Res,
-  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
@@ -20,6 +19,9 @@ import { LocalAuthGuard } from '../../core/guards/local-auth.guard';
 import { createResponse } from '../../helper/response.helper';
 import { GoogleAuthGuard } from 'src/core/guards/googleauth.guard';
 import { BlockToManyRequest } from 'src/core/guards/customTGuard.guard';
+import { Request } from 'express';
+import { createResponseType } from 'src/core/interfaces/types';
+import { User } from '@prisma/client';
 
 // Controller For Authentication Module
 @Controller('auth')
@@ -57,8 +59,10 @@ export class AuthController {
     summary: 'Register New User',
     responseType: CreateUserDto,
   })
-  async signUp(@Body() user: CreateUserDto): Promise<any> {
-    return this.authService.signUp(user);
+  async signUp(@Body() user: CreateUserDto): Promise<createResponseType> {
+    const  register = await this.authService.signUp(user);
+    return createResponse(HttpStatus.OK, "Signup Successfully", register);
+
   }
 
   @UniversalDecorator({
@@ -69,7 +73,7 @@ export class AuthController {
   @UseGuards(RefreshAuthGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refreshToken(@Req() request) {
+  async refreshToken(@Req() request):Promise<createResponseType> {
     const response = await this.authService.createRefreshToken(request.user.id);
     return createResponse(HttpStatus.OK, "Refresh Token", response);
   }
@@ -90,13 +94,12 @@ export class AuthController {
   }
 
 
-
   @Post("exchange-code")
   @UniversalDecorator({
     summary: 'Exchange code to Token',
     responseType: ExchangeCode,
   })
-  async exchangeCode(@Body() code:ExchangeCode ){
+  async exchangeCode(@Body() code:ExchangeCode ):Promise<createResponseType>{
     const token = await this.authService.exchangeCodeWithToken(code.code);
     return createResponse(HttpStatus.OK, "User Fetched Successfully", token);
   }
@@ -108,7 +111,7 @@ export class AuthController {
     summary: 'Forget Password',
     responseType: forgetPasswordDTO,
   })
-  async forgetPassword(@Body() forgetPasswordDTO: forgetPasswordDTO) {
+  async forgetPassword(@Body() forgetPasswordDTO: forgetPasswordDTO):Promise<createResponseType> {
     const response = await this.authService.forgetPassword(
       forgetPasswordDTO.email,
     );
@@ -121,7 +124,7 @@ export class AuthController {
     summary: 'Reset Password',
     responseType: resetPasswordDTO,
   })
-  async resetPassword(@Body() resetPasswordDTO: resetPasswordDTO) {
+  async resetPassword(@Body() resetPasswordDTO: resetPasswordDTO):Promise<createResponseType> {
     const response = await this.authService.resetPassword(resetPasswordDTO);
     return createResponse(
       HttpStatus.OK,

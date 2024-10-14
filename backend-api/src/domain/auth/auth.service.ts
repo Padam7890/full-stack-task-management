@@ -16,7 +16,7 @@ import { MailService } from '../../common/service/mail/mail.service';
 import path, { join } from 'path';
 import ejs, { renderFile } from 'ejs';
 import { resetPasswordDTO } from './dto/auth';
-import { IUserResponse } from '../../core/interfaces/types';
+import { IUserResponse, AuthResponseType } from '../../core/interfaces/types';
 import { v4 as uuidv4 } from 'uuid';
 import { GoogleAuthService } from './google-auth.service';
 
@@ -34,12 +34,11 @@ export class AuthService {
   ) {}
 
   // Signup Service
-  async signUp(data: CreateUserDto): Promise<any> {
+  async signUp(data: CreateUserDto): Promise<AuthResponseType> {
     const user = await this.userService.create(data);
     const { access_token, refresh_token } = await this.createTokens(user);
 
     return {
-      message: 'User SignUp Successfully',
       access_token,
       refresh_token,
       user,
@@ -58,10 +57,9 @@ export class AuthService {
   }
 
   // Login Service
-  async login(user: User): Promise<any> {
+  async login(user: User): Promise<AuthResponseType> {
     const { access_token, refresh_token } = await this.createTokens(user);
     return {
-      message: 'User SignIn Successfully',
       access_token,
       refresh_token,
       user,
@@ -136,7 +134,7 @@ export class AuthService {
   }
 
   // Generate unique code
-  async generateCode(response: IUserResponse) {
+  async generateCode(response: AuthResponseType) {
     const generateUuid = uuidv4();
     const addUserToUuid = generateUuid + response.user.id;
     return this.googleAuthService.saveCode(response.user.id, addUserToUuid);
