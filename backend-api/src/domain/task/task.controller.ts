@@ -17,8 +17,7 @@ import { CreateTaskDto, SearchTaskDto, StatusDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { UniversalDecorator } from '../../common/decorators/universal.decorator';
 import { createResponse } from '../../helper/response.helper';
-import { JwtAuthGuard } from 'src/core/guards/auth.guard';
-import { RoleGuard } from 'src/core/guards/role.guard';
+import { createResponseType } from 'src/core/interfaces/types';
 
 //all task related work Here , CRUD METHOD
 @Controller('tasks')
@@ -33,7 +32,7 @@ export class TaskController {
     role: process.env.ACCESS_ROLE,
     summary: 'Search Task',
   })
-  async search(@Query() searchTaskDto: SearchTaskDto) {
+  async search(@Query() searchTaskDto: SearchTaskDto):Promise<createResponseType> {
     const response = await this.taskService.search(searchTaskDto.search);
     if (response.length === 0) {
       return createResponse(HttpStatus.NOT_FOUND, 'No task found', response);
@@ -52,7 +51,7 @@ export class TaskController {
     summary: 'Update Task',
     responseType: CreateTaskDto,
   })
-  async create(@Body() createTaskDto: CreateTaskDto) {
+  async create(@Body() createTaskDto: CreateTaskDto):Promise<createResponseType> {
     const response = await this.taskService.create(createTaskDto);
     return createResponse(
       HttpStatus.CREATED,
@@ -67,7 +66,7 @@ export class TaskController {
     role: process.env.ACCESS_ROLE,
     summary: 'ALL Tasks',
   })
-  async findAll() {
+  async findAll():Promise<createResponseType> {
     const response = await this.taskService.findAll();
     return createResponse(
       HttpStatus.OK,
@@ -82,7 +81,7 @@ export class TaskController {
     role: process.env.ACCESS_ROLE,
     summary: 'Find Task By Id',
   })
-  async findTaskById(@Param('id') id: string) {
+  async findTaskById(@Param('id') id: string):Promise<createResponseType> {
     const response = await this.taskService.findtaskByid(+id);
     return createResponse(HttpStatus.OK, 'Task fetched successfully', response);
   }
@@ -94,7 +93,7 @@ export class TaskController {
     summary: 'Update Task',
     responseType: UpdateTaskDto,
   })
-  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto):Promise<createResponseType> {
     const response = await this.taskService.update(+id, updateTaskDto);
     return createResponse(HttpStatus.OK, 'Task updated successfully', response);
   }
@@ -105,7 +104,7 @@ export class TaskController {
     role: process.env.ACCESS_ROLE,
     summary: 'Delete Task',
   })
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string):Promise<createResponseType> {
     const response = await this.taskService.remove(+id);
     return createResponse(HttpStatus.OK, 'Task deleted successfully', response);
   }
@@ -117,7 +116,7 @@ export class TaskController {
     summary: 'Update Task',
     responseType: StatusDto,
   })
-  async updateTaskStatus(@Param('id') id: string, @Body() status: StatusDto) {
+  async updateTaskStatus(@Param('id') id: string, @Body() status: StatusDto):Promise<createResponseType> {
     const response = await this.taskService.updateTaskStatus(+id, status);
     return createResponse(
       HttpStatus.OK,
