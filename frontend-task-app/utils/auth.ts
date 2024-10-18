@@ -1,80 +1,52 @@
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 // Define the JWT token type
 interface JwtPayload {
-  iat: number; 
-  [key: string]: any; 
+  [key: string]: any;
 }
 
-// Define a constant for token lifespan (in seconds)
-const TOKEN_LIFESPAN = 3600; // 1 hour
-
-// Save token to sessionStorage
+// Save the token to cookies
 export const saveToken = (token: string) => {
-  sessionStorage.setItem("authToken", token);
-
-  // Save the token expiration date
-  const expirationDate = getJwtExpirationDate(token);
-  if (expirationDate) {
-    sessionStorage.setItem("authTokenExpiry", expirationDate.toISOString());
-  }
+  setCookie("authToken", token, { maxAge: 3600, path: "/" }); // Expires in 1 hour
 };
 
-// Retrieve token from sessionStorage
-export const getToken = () => {
-  if (typeof window !== "undefined") {
-    const token = sessionStorage.getItem("authToken");
-
-    if (!token) return null;
-
-    // Check if the token is expired
-    const expirationDate = getTokenExpirationDate();
-    if (expirationDate && new Date() > expirationDate) {
-      clearToken();
-      redirectToSignIn(); 
+// Retrieve the token from cookies
+export const getToken = (): string | null => {
+  try {
+    // Check if the token is present in cookies
+    const token = getCookie("authToken");
+    if (!token) {
+      console.warn("Token not found in cookies");
       return null;
     }
-
+    console.log(token);
     return token;
-  }
-};
-
-// Clear token and its expiration date from sessionStorage
-export const clearToken = () => {
-  sessionStorage.removeItem("authToken");
-  sessionStorage.removeItem("authTokenExpiry");
-};
-
-// Function to get the expiration date from the token
-const getJwtExpirationDate = (token?: string): Date | null => {
-  try {
-    if (!token) {
-      token = sessionStorage.getItem("authToken") || "";
-    }
-    const decodedToken = jwtDecode<JwtPayload>(token);
-    const iat = decodedToken.iat;
-    if (iat) {
-      const expirationDate = new Date(iat * 1000 + TOKEN_LIFESPAN * 1000); 
-    }
   } catch (error) {
-    console.error("Error decoding JWT token:", error);
+    console.error("Error retrieving token:", error);
+    return null;
   }
-  return null; 
 };
 
-// Function to get the expiration date from sessionStorage
-const getTokenExpirationDate = (): Date | null => {
-  const expiryString = sessionStorage.getItem("authTokenExpiry");
-  if (expiryString) {
-    return new Date(expiryString);
-  }
-  return null;
+// Clear the token from cookies
+export const clearToken = () => {
+  deleteCookie("authToken", { path: "/" });
 };
 
-// Function to redirect to the sign-in page
-const redirectToSignIn = () => {
+// Optional: Redirect to sign-in page
+export const redirectToSignIn = () => {
   if (typeof window !== "undefined") {
     window.location.href = "/signin";
+  }
+};
+
+// Decode the JWT token if needed
+export const decodeToken = (token: string): JwtPayload | null => {
+  try {
+    return jwtDecode<JwtPayload>(token);
+  } catch (error) {
+    console.error("Error decoding JWT token:", error);
+    return null;
   }
 };

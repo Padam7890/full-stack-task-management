@@ -9,6 +9,7 @@ const initialState: AuthState = {
   token: null,
 };
 
+
 const authSlice = createSlice({
   name: "auth",
   initialState,

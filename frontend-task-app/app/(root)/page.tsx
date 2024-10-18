@@ -18,6 +18,8 @@ const Dashboard: React.FC = () => {
   const router = useRouter();
   const code = params.get("code");
   const localToken = getToken();
+  
+  console.log(localToken);
 
   const navigateToSignIn = useCallback(() => {
     router.push("/signin");
